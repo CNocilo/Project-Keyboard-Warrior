@@ -1,0 +1,49 @@
+.main-color {
+    background-color: #0a9fbc;
+}
+
+.nav-tabs .nav-item .nav-link {
+    background-color: #A7E1EC;
+    border-color: #A7E1EC;
+  }
+
+.container-lg {
+    background-color: #A7E1EC;
+    margin-top: 10%
+
+}
+
+.title {
+    margin-left: 2.5%;
+    scroll-margin-top: 2.5%;
+}
+
+.container {
+    background-color: #A7E1EC;
+    border-color: red; /*6C8EBF*/
+}
+
+/*
+background-color: #e1f2f5;
+
+.navi {
+    margin-left: 1%;
+    display: inline;
+}
+
+.navbar {
+    margin-top: 2%;
+    background-color: #0a9fbc;
+    padding: 20px;
+}
+
+li a {
+    text-decoration: none;
+    color: black
+}
+
+li a:hover {
+    color: white;
+}
+
+*/
