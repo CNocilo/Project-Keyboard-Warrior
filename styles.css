@@ -2,6 +2,10 @@
     background-color: #0a9fbc;
 }
 
+.sec-color {
+    background-color: #A7E1EC;
+}
+
 .nav-tabs .nav-item .nav-link {
     background-color: #A7E1EC;
     border-color: #A7E1EC;
@@ -18,9 +22,11 @@
     scroll-margin-top: 2.5%;
 }
 
-.container {
-    background-color: #A7E1EC;
-    border-color: red; /*6C8EBF*/
+.game_window {
+    background-color: #FFFBEF;
+    border-style: solid;
+    border-radius: 15px;
+    border-color: #6C8EBF; /*6C8EBF*/
 }
 
 /*
