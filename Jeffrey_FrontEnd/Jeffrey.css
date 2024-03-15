@@ -1,0 +1,78 @@
+.main-color {
+    background-color: #6cd7ec;
+    width: 100%; /* Set width as needed */
+    margin: 0 auto; /* Center the container */
+    padding: 20px; /* Add padding */
+    border: 2px solid #6C8EBF; /* Add border */
+    border-radius: 10px; /* Add border radius */
+  }
+  
+  .sec-color {
+    background-color: #000304;
+  }
+  
+  .nav-tabs .nav-item .nav-link {
+    background-color: #A7E1EC;
+    border-color: #010b0d;
+  }
+  
+  .container {
+    max-width: 80%; /* Set maximum width */
+    margin: 0 auto; /* Center the content */
+  }
+  
+  .title {
+    scroll-margin-top: 2.5%;
+  }
+  
+  .container p {
+    text-align: center;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 24px;
+    background-image: linear-gradient(to right, #ffd06b, #ffcc5c, #0FB8AD);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: moveGradient 5s linear infinite, changeTextColor 5s linear infinite;
+  }
+  
+  @keyframes moveGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 200% 50%;
+    }
+  }
+  
+  @keyframes changeTextColor {
+    0% {
+      color: #2372d9;
+    }
+    25% {
+      color: #5cffe1;
+    }
+    50% {
+      color: #0FB8AD;
+    }
+    75% {
+      color: #9bff5c;
+    }
+    100% {
+      color: #0FB8AD;
+    }
+  }
+  
+  .creators-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
