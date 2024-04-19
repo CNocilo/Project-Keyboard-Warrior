@@ -6,6 +6,10 @@ __pycache__
 db.sqlite3
 media
 
+# react #
+node_modules/
+buil/
+
 # Backup files # 
 *.bak 
 
