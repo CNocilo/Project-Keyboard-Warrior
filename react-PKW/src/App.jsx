@@ -6,6 +6,7 @@ import {
 import Layout from './layouts/layout';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
+import LoginPage from './pages/LoginPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 
 
@@ -15,6 +16,7 @@ const router = createBrowserRouter (
       <Route index element={ <HomePage /> }/>
       <Route path='/about' element={ <AboutPage /> }/>
       <Route path='/leaderboard' element={ <LeaderboardPage /> }/>
+      <Route path='/login' element={ <LoginPage /> }/>
       
       
       

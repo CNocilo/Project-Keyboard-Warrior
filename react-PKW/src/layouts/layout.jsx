@@ -6,8 +6,10 @@ import Footer from '../components/Footer'
 const Layout = () => {
   return (
     <>
+      <section className="bg-cyan-700">
         <Logo />
         <Navbar />
+      </section>
         <Outlet />
         <Footer />
     </>

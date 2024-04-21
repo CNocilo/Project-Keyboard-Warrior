@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
   return (
     <footer className="bg-cyan-600 p-3 items-center">
-        <div className="container md:mx-auto bg-cyan-500 rounded-md shadow-md">
+        <div className="container md:mx-auto bg-cyan-500 bg-opacity-50 rounded-md shadow-md">
             <div className="flex space-x-2 items-center justify-center p-3">
                 <Link
                     className="p-2 bg-yellow-100 rounded-md font-mono hover:bg-white shadow-md"
@@ -29,11 +29,11 @@ const Footer = () => {
 
             </div>
             <div className="flex space-x-2 items-center justify-center p-5">
-                <a
+                <Link
                     className="p-2 bg-yellow-100 rounded-md font-mono hover:bg-white shadow-md"
-                    href='/'
+                    to='https://github.com/CNocilo/Project-Keyboard-Warrior'
                     >GitHub
-                </a>
+                </Link>
                 <a
                     className="p-2 bg-yellow-100 rounded-md font-mono hover:bg-white shadow-md"
                     href='/'
