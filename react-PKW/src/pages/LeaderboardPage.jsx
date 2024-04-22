@@ -5,17 +5,17 @@ const LeaderboardPage = () => {
   // State to hold leaderboard data
   const [leaderboardData, setLeaderboardData] = useState([]);
 
-  // Function to fetch leaderboard data
+  // Function to fetch leaderboard data from the API
   const fetchLeaderboardData = async () => {
     try {
-      const response = await axios.get('leaderboard.json'); // Adjust the URL as per your file location
+      const response = await axios.get('https://api.example.com/leaderboard'); // Replace with your API endpoint
       setLeaderboardData(response.data);
     } catch (error) {
       console.error('Error fetching leaderboard data:', error);
     }
   };
 
-  // Fetch leaderboard data on component mount
+  // Fetch leaderboard data when the component mounts
   useEffect(() => {
     fetchLeaderboardData();
   }, []);
@@ -37,8 +37,8 @@ const LeaderboardPage = () => {
           {leaderboardData.map((player, index) => (
             <tr key={index}>
               <td>{index + 1}</td>
-              <td>{player.playerName}</td>
-              <td>{player.score}</td>
+              <td>{player.username}</td>
+              <td>{player.wpm}</td>
               <td>{player.country}</td>
               <td>{player.layout}</td>
             </tr>
