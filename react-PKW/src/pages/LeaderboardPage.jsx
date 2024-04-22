@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const LeaderboardPage = () => {
   // State to hold leaderboard data
-  const [leaderboardData, setLeaderboardData] = useState([
-    { rank: 1, playerName: 'usrnm1', score: 122, country: 'USA', layout: 'US' },
-    { rank: 2, playerName: 'hacker123', score: 110, country: 'UK', layout: 'Dvorak' },
-    { rank: 3, playerName: 'Bob', score: 105, country: 'Canada', layout: 'US' },
-    // Add more initial data as needed
-  ]);
+  const [leaderboardData, setLeaderboardData] = useState([]);
+
+  // Function to fetch leaderboard data
+  const fetchLeaderboardData = async () => {
+    try {
+      const response = await axios.get('leaderboard.json'); // Adjust the URL as per your file location
+      setLeaderboardData(response.data);
+    } catch (error) {
+      console.error('Error fetching leaderboard data:', error);
+    }
+  };
+
+  // Fetch leaderboard data on component mount
+  useEffect(() => {
+    fetchLeaderboardData();
+  }, []);
 
   return (
     <div className="container my-5 mt-5">
@@ -23,9 +34,9 @@ const LeaderboardPage = () => {
           </tr>
         </thead>
         <tbody>
-          {leaderboardData.map((player) => (
-            <tr key={player.rank}>
-              <td>{player.rank}</td>
+          {leaderboardData.map((player, index) => (
+            <tr key={index}>
+              <td>{index + 1}</td>
               <td>{player.playerName}</td>
               <td>{player.score}</td>
               <td>{player.country}</td>
