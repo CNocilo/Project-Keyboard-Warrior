@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/userinfo', views.user_info, name='user_info'),
     path('api/userupdate', views.user_update, name='user_update'),
     path('api/finishedgame', views.finished_game, name='finished_game'),
+    path('api/checkloggedin', view.check_logged_in, name='check_logged_in')
 ]

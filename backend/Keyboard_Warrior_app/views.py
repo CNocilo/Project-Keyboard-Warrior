@@ -161,18 +161,44 @@ def user_info(request):
 
 
 def user_update(request):
-    # check logged in
     if request.method == 'POST':
-        # todo, implement getting info from browser and update user in db with that
-        return JsonResponse("todo", safe=False)
+        if request.user.is_authenticated:
+            try:
+                user = request.user
+                data = json.loads(request.body)
+                
+                for key, value in data.items():
+                    if key == 'password':
+                        user.set_password(value)
+                    elif key in ['display_name', 'country', 'keyboard', 'description']:
+                        setattr(user, key, value)
+                    else:
+                        return JsonResponse({"error": "Unknown keys sent."}, status=400)
+                
+                user.save()
+                return JsonResponse({"success": "User info updated successfully."})
+            
+            except KeyError:
+                return JsonResponse({"error": "Missing JSON key."}, status=400)
+
+            except json.JSONDecodeError:
+                return JsonResponse({"error": "Invalid JSON data."}, status=400)
+
+            except Exception as e:
+                return JsonResponse({"error": str(e)}, status=500)
+            
+        else:
+            return JsonResponse({"error": "You are not logged in."}, status=400)
     else:
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
 
-
-
-
+def check_logged_in(request):
+    if request.user.is_authenticated:
+        return JsonResponse({"authenticated": True, "username": request.user.username})
+    else:
+        return JsonResponse({"authenticated": False})
 
 
 
