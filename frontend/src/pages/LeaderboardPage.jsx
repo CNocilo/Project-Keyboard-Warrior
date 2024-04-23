@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 
 const LeaderboardPage = () => {
   // State to hold leaderboard data
@@ -8,7 +8,7 @@ const LeaderboardPage = () => {
   // Function to fetch leaderboard data from the API
   const fetchLeaderboardData = async () => {
     try {
-      const response = await axios.get('https://api.example.com/leaderboard'); // Replace with your API endpoint
+      //const response = await axios.get('https://api.example.com/leaderboard'); // Replace with your API endpoint
       setLeaderboardData(response.data);
     } catch (error) {
       console.error('Error fetching leaderboard data:', error);
@@ -21,7 +21,7 @@ const LeaderboardPage = () => {
   }, []);
 
   return (
-    <div className="container my-5 mt-5">
+    <div className="container my-5 mt-5"
       <h3>All Time Leaderboard</h3>
       <table className="table">
         <thead>
