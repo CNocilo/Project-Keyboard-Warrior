@@ -1,4 +1,4 @@
-import React from 'react'
+//import React from 'react'
 import MainBodyGame from '../components/MainBodyGame'
 import GameOptions from '../components/GameOptions'
 
