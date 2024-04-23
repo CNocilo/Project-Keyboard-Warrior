@@ -168,6 +168,8 @@ def user_update(request):
                 data = json.loads(request.body)
                 
                 for key, value in data.items():
+                    if key == 'username':
+                        return JsonResponse({"error": "Cannot change username."}, status=400)
                     if key == 'password':
                         user.set_password(value)
                     elif key in ['display_name', 'country', 'keyboard', 'description']:
