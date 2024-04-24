@@ -17,13 +17,22 @@ const MainBodyGame = (options) => {
 
   const [wordHistory, setWordHistory] = useState([]);
   const [misses, setMisses] = useState(0);
+  //const [currentTime, setCurrentTime] = useState(0);
+  const [startTime, setStartTime] = useState(0);
+  const [endTime, setEndTime] = useState(0);
+  const [wpm, setWPM] = useState(0);
+  const [accuracy, setAccuracy] = useState(0);
 
   const keyDown = (event) => {
     const inputChar = event.key;
     const targetChar = currentWord[currentChar];
 
+    if (wordHistory.length === 0) {
+      setStartTime(Date.now());
+    }
+
     if (inputChar === targetChar) {
-      setScore(score + 10);
+      setScore(score + 1);
       
       setCurrentChar(currentChar + 1);
 
@@ -34,14 +43,24 @@ const MainBodyGame = (options) => {
         setCurrentChar(0);
       }
     }
+    else if (event.key !== 'Shift' && event.key !== 'CapsLock') {
+      setMisses(misses + 1);
+    }
 
   }
 
   useEffect(() => {
     // Add event listener for keydown event
     window.addEventListener('keydown', keyDown);
-
-    // Cleanup function to remove event listener
+    setEndTime(Date.now());
+    if (score > 3) {
+      setWPM(Math.round((score * (60 / ((endTime - startTime) / 1000))) / 5));
+      setAccuracy(Math.round((score / (misses + score)) * 100));
+    }
+    else {
+      setWPM(0);
+    }
+      // Cleanup function to remove event listener
     return () => {
       window.removeEventListener('keydown', keyDown);
     };
@@ -64,7 +83,10 @@ const MainBodyGame = (options) => {
               </span>
             ))}{" "}
           {passage.join(" ")}</p><br />
-          <p>{"Score: "}{score} {options.time}</p>
+          <p>{"Score: "}{score}</p><br />
+          <p>{"Accuracy: "}{accuracy}</p><br />
+          <p>{"Misses: "}{misses}</p><br />
+          <p>{"WPM: "}{wpm}</p>
         </div>
       </div>
     </section>
