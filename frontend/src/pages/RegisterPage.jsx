@@ -14,9 +14,8 @@ const [isMatching, setIsMatching] = useState(true);
 const handleRegister = async(e) => {
     e.preventDefault()
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/register', {
+        const response = await fetch('http://localhost:8000/api/register', {
             method: "POST",
-            mode: "cors",
             headers: {
                 "Content-Type" : "application/json",
             },

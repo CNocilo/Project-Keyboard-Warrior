@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */ 
 import React from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
@@ -12,34 +11,25 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const { loggingIn } = useContext(AuthContext)
 
-    const handleLogin = async(e) => {
+    const handleLogin = async (e) => {
         e.preventDefault()
         try{
-            const response = await fetch('http://127.0.0.1:8000/api/login', {
+            const response = await fetch('http://localhost:8000/api/login', {
                 method: "POST",
-                mode: "cors",
+                credentials: 'include',
                 headers: {
                     "Content-Type" : "application/json",
                 },
                 body: JSON.stringify({ username, password })
-<<<<<<< HEAD
-            })         
-=======
             })
+            const result = await response.json()
             
->>>>>>> 6c29675802d4f0683a63a78ea2d897834070c751
 
             if (!response.ok) {
                 alert("Error when signing in.")
                 throw new Error('Error with signing into network');
             }
             else {
-                const cookies = response.headers.get('Set-Cookie');
-                if (cookies) {
-                // Save the cookies in your browser
-                    document.cookie = cookies;
-                }
-
                 loggingIn()
                 alert(`User logged in! Welcome ${username}!`)
             }
