@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */ 
 import React from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
@@ -22,7 +23,6 @@ const LoginPage = () => {
                 },
                 body: JSON.stringify({ username, password })
             })
-            const result = await response.json()
             
 
             if (!response.ok) {
