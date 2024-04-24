@@ -7,8 +7,27 @@ const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleLogin = async () => {
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        try{
+            const response = await fetch('http://127.0.0.1:8000/api/login', {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({ username, password })
+            })
+            const result = await response.json()
 
+            if (!response.ok) {
+                alert("Incorrect username or password.")
+                throw new Error('Error with signing into network');
+            }
+
+        } catch (error) {
+            console.error('Error during login', error)
+        }
     }
 
 
@@ -22,7 +41,7 @@ const LoginPage = () => {
         <form>
             <div className="flex-col bg-yellow-100 p-5 m-[2%] rounded-md shadow-md">
                 <div className="m-[1%] p-[2%]">
-                    <label htmlfor="username">
+                    <label htmlFor="username">
                         Username:
                     </label>
                     <input className="border-2 border-gray-500 rounded-md focus:outline-cyan-500"
@@ -34,7 +53,7 @@ const LoginPage = () => {
                     </input>
                 </div>
                 <div className="m-[1%] p-[2%]">
-                    <label htmlfor="password">
+                    <label htmlFor="password">
                         Password:
                     </label>
                     <input className="border-2 border-gray-500 rounded-md focus:outline-cyan-500"
@@ -46,12 +65,12 @@ const LoginPage = () => {
                     </input>
                 </div>
                 <div className="m-[1%] mt-3 p-[2%]">
-                    <NavLink
-                        to="/login"
+                    <button
                         className="bg-cyan-400 rounded-md p-2 hover:text-white"
+                        onClick={handleLogin}
                         >Login
 
-                    </NavLink>
+                    </button>
                 </div>
                 <div className="m-[1%] mt-3 p-[2%]">
                     <NavLink

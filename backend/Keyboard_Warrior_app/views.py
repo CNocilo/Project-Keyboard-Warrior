@@ -1,11 +1,12 @@
 import json
 from django.http import JsonResponse, HttpResponse
 from django.contrib.auth import authenticate, login, logout
+from django.views.decorators.csrf import csrf_exempt
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Game, GameUser
 
 
-
+@csrf_exempt
 def leaderboard(request):
     try:
         leaderboard_games = Game.objects.order_by('-wpm')[:10]    # query top games
@@ -34,7 +35,7 @@ def leaderboard(request):
 # add user history
     
     
-
+@csrf_exempt
 def finished_game(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -61,7 +62,7 @@ def finished_game(request):
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
-
+@csrf_exempt
 def register_user(request):
     if request.method == 'POST':
         try:
@@ -99,7 +100,7 @@ def register_user(request):
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
 
 
-
+@csrf_exempt
 def login_user(request):
     if request.method == 'POST':
         try:
@@ -131,7 +132,7 @@ def login_user(request):
 
 
 
-
+@csrf_exempt
 def logout_user(request):
     if request.method == 'POST':
         logout(request)
@@ -139,7 +140,7 @@ def logout_user(request):
     else:
         return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)    
 
-
+@csrf_exempt
 def user_info(request):
     try:
         username = request.GET.get('username')  # query string
@@ -165,7 +166,7 @@ def user_info(request):
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-
+@csrf_exempt
 def user_update(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
@@ -201,7 +202,7 @@ def user_update(request):
         return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
-
+@csrf_exempt
 def check_logged_in(request):
     if request.user.is_authenticated:
         return JsonResponse({"authenticated": True, "username": request.user.username})

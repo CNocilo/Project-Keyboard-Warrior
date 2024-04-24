@@ -21,7 +21,7 @@ const LeaderboardPage = () => {
   }, []);
 
   return (
-    <div className="container my-5 mt-5"
+    <div className="container my-5 mt-5">
       <h3>All Time Leaderboard</h3>
       <table className="table">
         <thead>
