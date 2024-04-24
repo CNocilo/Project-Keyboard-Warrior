@@ -19,6 +19,7 @@ const LoginPage = () => {
                 body: JSON.stringify({ username, password })
             })
             const result = await response.json()
+            alert(`User logged in! Welcome ${username}!`)
 
             if (!response.ok) {
                 alert("Incorrect username or password.")
@@ -74,7 +75,7 @@ const LoginPage = () => {
                 </div>
                 <div className="m-[1%] mt-3 p-[2%]">
                     <NavLink
-                        to="/test"
+                        to="/register"
                         className="bg-cyan-400 rounded-md p-2 hover:text-white"
                         >Need to sign up?
 

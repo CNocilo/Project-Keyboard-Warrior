@@ -10,7 +10,9 @@ const Layout = () => {
         <Logo />
         <Navbar />
       </section>
+      <section className="flex-grow bg-cyan-400 pb-[20%]">
         <Outlet />
+      </section>
         <Footer />
     </>
   )

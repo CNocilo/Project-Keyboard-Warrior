@@ -7,7 +7,7 @@ import Layout from './layouts/layout';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
 import LoginPage from './pages/LoginPage';
-import Test from './pages/Test';
+import RegisterPage from './pages/RegisterPage';
 import LeaderboardPage from './pages/LeaderboardPage';
 
 
@@ -18,7 +18,7 @@ const router = createBrowserRouter (
       <Route path='/about' element={ <AboutPage /> }/>
       <Route path='/leaderboard' element={ <LeaderboardPage /> }/>
       <Route path='/login' element={ <LoginPage /> }/>
-      <Route path='/test' element={ <Test /> }/>
+      <Route path='/register' element={ <RegisterPage /> }/>
       
       
       
