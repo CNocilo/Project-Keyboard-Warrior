@@ -8,7 +8,7 @@ const LeaderboardPage = () => {
   // Function to fetch leaderboard data from the API
   const fetchLeaderboardData = async () => {
     try {
-      const response = await fetch('https://api.example.com/leaderboard'); // Replace with your API endpoint
+      const response = await fetch('http://127.0.0.1:8000/api/leaderboard'); // Replace with your API endpoint
       if (!response.ok) {
         throw new Error('Failed to fetch leaderboard data');
       }

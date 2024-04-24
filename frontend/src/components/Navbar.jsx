@@ -32,7 +32,7 @@ const Navbar = () => {
                     className={({ isActive }) =>
                         isActive ? 'bg-cyan-400 text-black hover:bg-cyan-400 hover:text-white font-mono rounded-tl-md rounded-tr-md px-3 py-2' 
                                  : 'bg-cyan-500 text-black hover:bg-cyan-400 hover:text-white font-mono rounded-tl-md rounded-tr-md px-3 py-2'}
-                    >Login    
+                    >Login/Register    
                 </NavLink>
 
             </div>
