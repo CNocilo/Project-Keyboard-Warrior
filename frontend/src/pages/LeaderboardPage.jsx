@@ -34,10 +34,10 @@ const LeaderboardPage = () => {
   ];
 
   return (
-    <div className="container-fluid p-0 m-0" style={{ textAlign: 'center', color: '#fff', backgroundColor: '#001229', fontFamily: 'monospace', paddingBottom: '40px', fontSize: '125%' }}>
+    <div className="container-fluid p-0 m-0" style={{ textAlign: 'center', color: '#fff', backgroundColor: 'cyan', fontFamily: 'monospace', paddingBottom: '40px', fontSize: '125%' }}>
     <h1 style={{ margin: '0', padding: '20px', fontSize: '2.5em' }}>Keyboard Warrior Leaderboard</h1>
       <div style={{ overflowX: 'auto' }}>
-        <table className="table table-bordered" style={{ width: '80%', margin: '0 auto', borderCollapse: 'collapse', fontFamily: 'monospace', backgroundColor: '#001229', border: '3px solid #fff', animation: 'borderAnimation 5s infinite alternate' }}>
+        <table className="table table-bordered" style={{ width: '80%', margin: '0 auto', borderCollapse: 'collapse', fontFamily: 'monospace', backgroundColor: 'bg-cyan400', border: '3px solid #fff', animation: 'borderAnimation 5s infinite alternate' }}>
           <thead>
             <tr>
               <th style={{ border: '3px solid #fff', padding: '15px', height: '60px' }}>Rank</th>
