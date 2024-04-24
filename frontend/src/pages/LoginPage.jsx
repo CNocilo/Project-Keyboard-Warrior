@@ -1,11 +1,15 @@
 import React from 'react'
 import { useState } from 'react'
+import { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
+import { AuthContext } from '../components/AuthContext'
+
 
 const LoginPage = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const { loggingIn } = useContext(AuthContext)
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -19,11 +23,15 @@ const LoginPage = () => {
                 body: JSON.stringify({ username, password })
             })
             const result = await response.json()
-            alert(`User logged in! Welcome ${username}!`)
+            
 
             if (!response.ok) {
-                alert("Incorrect username or password.")
+                alert("Error when signing in.")
                 throw new Error('Error with signing into network');
+            }
+            else {
+                loggingIn()
+                alert(`User logged in! Welcome ${username}!`)
             }
 
         } catch (error) {
