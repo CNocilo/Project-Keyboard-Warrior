@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */ 
 import React from 'react'
 import { useState } from 'react'
 import { useContext } from 'react'
@@ -21,7 +22,12 @@ const LoginPage = () => {
                     "Content-Type" : "application/json",
                 },
                 body: JSON.stringify({ username, password })
+<<<<<<< HEAD
             })         
+=======
+            })
+            
+>>>>>>> 6c29675802d4f0683a63a78ea2d897834070c751
 
             if (!response.ok) {
                 alert("Error when signing in.")
