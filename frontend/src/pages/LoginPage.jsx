@@ -11,7 +11,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const { loggingIn } = useContext(AuthContext)
 
-    const handleLogin = async (e) => {
+    const handleLogin = async(e) => {
         e.preventDefault()
         try{
             const response = await fetch('http://127.0.0.1:8000/api/login', {
@@ -21,15 +21,19 @@ const LoginPage = () => {
                     "Content-Type" : "application/json",
                 },
                 body: JSON.stringify({ username, password })
-            })
-            const result = await response.json()
-            
+            })         
 
             if (!response.ok) {
                 alert("Error when signing in.")
                 throw new Error('Error with signing into network');
             }
             else {
+                const cookies = response.headers.get('Set-Cookie');
+                if (cookies) {
+                // Save the cookies in your browser
+                    document.cookie = cookies;
+                }
+
                 loggingIn()
                 alert(`User logged in! Welcome ${username}!`)
             }
