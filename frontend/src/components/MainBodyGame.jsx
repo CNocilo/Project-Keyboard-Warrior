@@ -5,17 +5,9 @@ const MainBodyGame = () => {
   const [isRunning, setIsRunning] = useState(true);
   const [score, setScore] = useState(0);
   const [currentChar, setCurrentChar] = useState(0);
-  const [currentWord, setCurrentWord] = useState("It ");
-  const [passage, setPassage] = useState(["had ", "been ", "a ", "rough ", "day. ", "Things ", "hadn't ", "gone ", "as ", 
-  "planned ", "and ", "that ", "meant ", "Hannah ", "got ", "yelled ", "at ", "by ", 
-  "her ", "boss. ", "It ", "didn't ", "even ", "matter ", "that ", "it ", "wasn't ", 
-  "her ", "fault. ", "When ", "things ", "went ", "wrong ", "at ", "work, ", 
-  "Hannah ", "got ", "the ", "blame ", "no ", "matter ", "the ", "actual ", 
-  "circumstances. ", "It ", "wasn't ", "fair, ", "but ", "there ", "was ", 
-  "little ", "she ", "could ", "do ", "without ", "risking ", "her ", "job, ", 
-  "and ", "she ", "wasn't ", "in ", "a ", "position ", "to ", "do ", "that ", 
-  "with ", "the ", "plans ", "she ", "had. "]);
-
+  const [currentWord, setCurrentWord] = useState("");
+  const [passage, setPassage] = useState([]);
+  const wordBank = ["the ", "be ", "of ", "and ", "a ", "to ", "in ", "he ", "have ", "it ", "that ", "for ", "they ", "I ", "with ", "as ", "not ", "on ", "she ", "at ", "by ", "this ", "we ", "you ", "do ", "but ", "from ", "or ", "which ", "one ", "would ", "all ", "will ", "there ", "say ", "who ", "make ", "when ", "can ", "more ", "if ", "no ", "man ", "out ", "other ", "so ", "what ", "time ", "up ", "go ", "about ", "than ", "into ", "could ", "state ", "only ", "new ", "year ", "some ", "take ", "come ", "these ", "know ", "see ", "use ", "get ", "like ", "then ", "first ", "any ", "work ", "now ", "may ", "such ", "give ", "over ", "think ", "most ", "even ", "find ", "day ", "also ", "after ", "way ", "many ", "must ", "look ", "before ", "great ", "back ", "through ", "long ", "where ", "much ", "should ", "well ", "people ", "down ", "own ", "just ", "because ", "good ", "each ", "those ", "feel ", "seem ", "how ", "high ", "too ", "place ", "little ", "world ", "very ", "still ", "nation ", "hand ", "old ", "life ", "tell ", "write ", "become ", "here ", "show ", "house ", "both ", "between ", "need ", "mean ", "call ", "develop ", "under ", "last ", "right ", "move ", "thing ", "general ", "school ", "never ", "same ", "another ", "begin ", "while ", "number ", "part ", "turn ", "real ", "leave ", "might ", "want ", "point ", "form ", "off ", "child ", "few ", "small ", "since ", "against ", "ask ", "late ", "home ", "interest ", "large ", "person ", "end ", "open ", "public ", "follow ", "during ", "present ", "without ", "again ", "hold ", "govern ", "around ", "possible ", "head ", "consider ", "word ", "program ", "problem ", "however ", "lead ", "system ", "set ", "order ", "eye ", "plan ", "run ", "keep ", "face ", "fact ", "group ", "play ", "stand ", "increase ", "early ", "course ", "change ", "help ", "line "]
   const [wordHistory, setWordHistory] = useState([]);
   const [misses, setMisses] = useState(0);
   //const [currentTime, setCurrentTime] = useState(0);
@@ -25,15 +17,37 @@ const MainBodyGame = () => {
   const [accuracy, setAccuracy] = useState(0);
   const [isLoggedIn, setIsLoggedIn] = useState(0);
   const [timer, setTimer] = useState(0);
-
   const [time, setTime] = useState(30);
-  const [words, setWords] = useState(50);
+  const [words, setWords] = useState(10);
+
+  const reInit = () => {
+    setPassage([]);
+    setCurrentWord("");
+    setWordHistory([]);
+    setCurrentChar(0);
+    randomizePassage();
+  }
+
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  const randomizePassage = () => {
+    setCurrentWord(wordBank[getRandomInt(0,199)]);
+    setCurrentWord(currentWord.charAt(0).toUpperCase() + currentWord.slice(1));
+    for (let i = 0; i < words; i++) {
+      setPassage((prev) => [...prev, wordBank[getRandomInt(0,199)]]);
+    }
+  }
 
   const handleTime = (button) => {
-      setTime(button);
+    setTime(button);
   }
   const handleWords = (button) => {
-      setWords(button);
+    setWords(button);
+    reInit();
   }
 
   const fetchLogin = async () => {
@@ -57,6 +71,7 @@ const MainBodyGame = () => {
   // Fetch leaderboard data when the component mounts
   useEffect(() => {
     fetchLogin();
+    randomizePassage();
     //setIsLoggedIn(100);
   }, []);
 
@@ -83,7 +98,7 @@ const MainBodyGame = () => {
         setCurrentChar(0);
       }
       else if (passage.length === 0) {
-        passage;
+        setIsRunning(false);
       }
     }
     else if (event.key !== 'Shift' && event.key !== 'CapsLock') {
@@ -95,10 +110,12 @@ const MainBodyGame = () => {
   useEffect(() => {
     // Add event listener for keydown event
     window.addEventListener('keydown', keyDown);
-    setEndTime(Date.now());
-    if (score > 3 && isRunning) {
-      setWPM(Math.round((score * (60 / ((endTime - startTime) / 1000))) / 5));
-      setAccuracy(Math.round((score / (misses + score)) * 100));
+    if (isRunning) {
+      setEndTime(Date.now());
+      if (score > 3) {
+        setWPM(Math.round((score * (60 / ((endTime - startTime) / 1000))) / 5));
+        setAccuracy(Math.round((score / (misses + score)) * 100));
+      }
     }
       // Cleanup function to remove event listener
     return () => {
@@ -127,8 +144,7 @@ const MainBodyGame = () => {
             <p>{"Score: "}{score}</p><br />
             <p>{"Accuracy: "}{accuracy}</p><br />
             <p>{"Misses: "}{misses}</p><br />
-            <p>{"WPM: "}{wpm}</p><br />
-            <p>{"Time/Words: "}{time}{words}</p><br />
+            <p>{"WPM: "}{wpm}</p>
           </div>
         </div>
       </section>
