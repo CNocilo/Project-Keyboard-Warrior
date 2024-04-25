@@ -14,9 +14,9 @@ const LoginPage = () => {
     const handleLogin = async (e) => {
         e.preventDefault()
         try{
-            const response = await fetch('http://127.0.0.1:8000/api/login', {
+            const response = await fetch('http://localhost:8000/api/login', {
                 method: "POST",
-                mode: "cors",
+                credentials: 'include',
                 headers: {
                     "Content-Type" : "application/json",
                 },

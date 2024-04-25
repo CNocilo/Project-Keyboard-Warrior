@@ -32,7 +32,30 @@ def leaderboard(request):
         return JsonResponse({"error": str(e)}, status=500)    # Handle any unexpected exceptions
     
     
-# add user history
+@csrf_exempt
+def user_history(request):
+    try:
+        username = request.GET.get('username')  # Get the username from the query string parameter
+        if not username:
+            return JsonResponse({"error": "Missing username query parameter."}, status=400)
+        
+        # Query the Game objects for the user's history
+        user_games = Game.objects.filter(username=username).order_by('-timestamp')
+        if not user_games:    # If no games found for the user, return an empty list
+            return JsonResponse([], safe=False)
+        
+        # Create a list containing the user's game history data
+        user_history = []
+        for game in user_games:
+            user_history.append({
+                'timestamp': game.timestamp,
+                'wpm': game.wpm,
+            })
+        
+        return JsonResponse(user_history, safe=False)
+    
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)    # Handle any unexpected exceptions
     
     
 @csrf_exempt
@@ -144,7 +167,6 @@ def logout_user(request):
 def user_info(request):
     try:
         username = request.GET.get('username')  # query string
-
         if not username:
             return JsonResponse({"error": "Missing username query parameter."}, status=400)
 

@@ -16,5 +16,6 @@ buil/
 # Environments 
 .env 
 .venv
+venv
 
 .directory
