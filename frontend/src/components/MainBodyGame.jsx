@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 
 const MainBodyGame = () => {
-  const [isRunning, setIsRunning] = useState(true);
+  const [isFinished, setIsFinished] = useState(false);
   const [score, setScore] = useState(0);
   const [currentChar, setCurrentChar] = useState(0);
   const [currentWord, setCurrentWord] = useState("");
@@ -50,6 +50,32 @@ const MainBodyGame = () => {
     //reInit();
   }
 
+  const handleLeaderboard = async () => {
+    try{
+        const response = await fetch('http://localhost:8000/api/finishedgame', {
+            method: "POST",
+            credentials: 'include',
+            headers: {
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify({ wpm })
+        })
+        const result = await response.json()
+        
+
+        if (!response.ok) {
+            alert("Error when signing in.")
+            throw new Error('Error with signing into network');
+        }
+        else {
+            alert(`User logged in! Welcome ${username}!`)
+        }
+
+      } catch (error) {
+          console.error('Error during login', error)
+      }
+  }
+
   const fetchLogin = async () => {
     try {
       const response = await fetch('http://localhost:8000/api/checkloggedin', {
@@ -84,20 +110,21 @@ const MainBodyGame = () => {
       setStartTime(Date.now());
     }
 
-    if (inputChar === targetChar && isRunning) {
+    if (inputChar === targetChar && !isFinished) {
       setScore(score + 1);
       
       setCurrentChar(currentChar + 1);
 
-      if (currentChar >= currentWord.length - 1 && passage.length > 0) {
+      if (currentChar >= currentWord.length - 1) {
         setWordHistory((prev) => [...prev, currentWord]);
         setCurrentWord(passage[0]);
         setPassage((prev) => prev.slice(1));
         setCurrentChar(0);
       }
-      //else if (passage.length === 0) {
-        //setIsRunning(false);
-      //}
+      else if (currentChar === currentWord.length - 2 && passage.length === 0){
+        handleLeaderboard();
+        setIsFinished(true);
+      }
     }
     else if (event.key !== 'Shift' && event.key !== 'CapsLock') {
       setMisses(misses + 1);
@@ -108,7 +135,7 @@ const MainBodyGame = () => {
   useEffect(() => {
     // Add event listener for keydown event
     window.addEventListener('keydown', keyDown);
-    if (isRunning) {
+    if (!isFinished) {
       setEndTime(Date.now());
       if (score > 3) {
         setWPM(Math.round((score * (60 / ((endTime - startTime) / 1000))) / 5));
@@ -208,6 +235,19 @@ const MainBodyGame = () => {
                     100
                 </p></button>
                 
+           </div>
+        </div>
+        <div className="container mt-[5%] bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
+            <div className="bg-yellow-50 p-2 text-center rounded-md">
+                Post to Leaderboard
+            </div>
+           <div className="flex space-x-2 pt-1 justify-center">
+                <button 
+                    onClick={() => handleLeaderboard()}
+                    style={{ color: words === (isFinished ? 'gray' : 'black' )}}>
+                <p>
+                    10
+                </p></button>    
            </div>
         </div>
     </section>
