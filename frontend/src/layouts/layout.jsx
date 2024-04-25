@@ -10,7 +10,7 @@ const Layout = () => {
         <Logo />
         <Navbar />
       </section>
-      <section className="flex-grow bg-cyan-400 pb-[20%]">
+      <section className="flex-grow bg-cyan-400 pb-[10%]">
         <Outlet />
       </section>
         <Footer />

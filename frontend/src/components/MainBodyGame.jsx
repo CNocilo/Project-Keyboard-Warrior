@@ -15,7 +15,7 @@ const MainBodyGame = () => {
   const [endTime, setEndTime] = useState(0);
   const [wpm, setWPM] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [timer, setTimer] = useState(0);
   const [time, setTime] = useState(30);
   const [words, setWords] = useState(10);
@@ -36,7 +36,7 @@ const MainBodyGame = () => {
 
   const randomizePassage = () => {
     setCurrentWord(wordBank[getRandomInt(0,199)]);
-    setCurrentWord(currentWord.charAt(0).toUpperCase() + currentWord.slice(1));
+    //setCurrentWord(currentWord.charAt(0).toUpperCase() + currentWord.slice(1));
     for (let i = 0; i < words; i++) {
       setPassage((prev) => [...prev, wordBank[getRandomInt(0,199)]]);
     }
@@ -46,22 +46,24 @@ const MainBodyGame = () => {
     setTime(button);
   }
   const handleWords = (button) => {
-    setWords(button);
-    reInit();
+    //setWords(button);
+    //reInit();
   }
 
   const fetchLogin = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/checkloggedin'); // Replace with your API endpoint
+      const response = await fetch('http://localhost:8000/api/checkloggedin', {
+                                    credentials: 'include',
+                                  }); // Replace with your API endpoint
       if (!response.ok) {
-        throw new Error('Failed to fetch leaderboard data');
+        throw new Error('Failed to fetch login data');
       }
       const data = await response.json();
       if (data.authenticated) {
-        setIsLoggedIn(1);
+        setIsLoggedIn(true);
       }
       else {
-        setIsLoggedIn(2);
+        setIsLoggedIn(false);
       }
     } catch (error) {
       console.error('Error fetching login data:', error);
@@ -72,7 +74,6 @@ const MainBodyGame = () => {
   useEffect(() => {
     fetchLogin();
     randomizePassage();
-    //setIsLoggedIn(100);
   }, []);
 
   const keyDown = (event) => {
@@ -81,9 +82,6 @@ const MainBodyGame = () => {
 
     if (wordHistory.length === 0) {
       setStartTime(Date.now());
-      //setTimeout(() => {
-      //  setIsRunning(false);
-      //}, 15000)
     }
 
     if (inputChar === targetChar && isRunning) {
@@ -97,9 +95,9 @@ const MainBodyGame = () => {
         setPassage((prev) => prev.slice(1));
         setCurrentChar(0);
       }
-      else if (passage.length === 0) {
-        setIsRunning(false);
-      }
+      //else if (passage.length === 0) {
+        //setIsRunning(false);
+      //}
     }
     else if (event.key !== 'Shift' && event.key !== 'CapsLock') {
       setMisses(misses + 1);
