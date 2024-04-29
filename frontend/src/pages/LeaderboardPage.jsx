@@ -78,26 +78,26 @@ const LeaderboardPage = () => {
     //   </div>
     // </div>
     
-  <div className="p-[10%]">
-    <div className="p-[2%] bg-cyan-500 rounded-md shadow-md">
-      <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-              <caption class="p-5 text-3xl font-mono font-[700] text-left rtl:text-right text-gray-900 bg-yellow-100">
+  <div className="py-[5%] px-[10%]">
+    <div className="p-[3%] bg-cyan-600 bg-opacity-50 rounded-md shadow-md">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+              <caption className="p-[3%] text-3xl font-mono font-[700] text-left rtl:text-right text-gray-900 bg-yellow-100">
               Global Leaderboard
-                  <p class="mt-1 text-xl font-normal text-gray-500 dark:text-gray-400">Who's on top of the charts today..?</p>
+                  <p className="mt-1 text-xl font-normal text-gray-500 dark:text-gray-400">Who's on top of the charts today..?</p>
               </caption>
-              <thead class="text-lg text-gray-700 font-mono uppercase bg-yellow-100">
+              <thead className=" text-lg text-gray-700 font-mono uppercase bg-yellow-100">
                   <tr>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                           Player Name
                       </th>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                           WPM
                       </th>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                           Country
                       </th>
-                      <th scope="col" class="px-6 py-3">
+                      <th scope="col" className="px-6 py-3">
                           Keyboard
                       </th>
                   </tr>
@@ -105,40 +105,39 @@ const LeaderboardPage = () => {
               <tbody>
                   {leaderboardData.length > 0 ? (
                       leaderboardData.map((player, index) => (
-                        <tr key={index} class="bg-yellow-100">
-                          <th scope="row" class="px-6 py-4 font-mono text-lg font-[400] text-gray-900 whitespace-nowrap">
+                        <tr key={index} className="bg-yellow-100">
+                          <th scope="row" className="px-6 py-4 font-mono text-lg font-[400] text-gray-900 whitespace-nowrap">
                             {player.username}
                           </th>
-                          <td class="px-6 py-3 text-lg">
+                          <td className="px-6 py-3 text-lg font-mono">
                             {player.wpm}
                           </td>
-                          <td class="px-6 py-3 text-3xl">
+                          <td className="px-6 py-3 text-3xl font-mono">
                             <ReactCountryFlag countryCode={player.country} svg />
                           </td>
-                          <td class="px-6 py-3 text-lg">
+                          <td className="px-6 py-3 text-lg font-mono">
                             {player.keyboardLayout}
                           </td>
                         </tr>
                       ))
                     ) : (
                       presetLeaderboardData.map((player, index) => (
-                        <tr key={index} class="bg-yellow-100">
-                          <th scope="row" class="px-6 py-4 font-mono text-lg font-[400] text-gray-900 whitespace-nowrap">
+                        <tr key={index} className="bg-yellow-100">
+                          <th scope="row" className="px-6 py-4 font-mono text-lg font-[400] text-gray-900 whitespace-nowrap">
                             {player.username}
                           </th>
-                          <td class="px-6 py-3 text-lg">
+                          <td className="px-6 py-3 text-lg font-mono">
                             {player.wpm}
                           </td>
-                          <td class="px-6 py-3 text-3xl">
+                          <td className="px-6 py-3 text-3xl font-mono">
                             <ReactCountryFlag countryCode={player.country} svg />
                           </td>
-                          <td class="px-6 py-3 text-lg">
+                          <td className="px-6 py-3 text-lg font-mono">
                             {player.keyboardLayout}
                           </td>
                         </tr>
                       ))
                     )}
-
               </tbody>
           </table>
       </div>
