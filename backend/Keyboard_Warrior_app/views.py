@@ -26,38 +26,12 @@ def leaderboard(request):
                 'keyboardLayout': cur_user.keyboard
             })
             
-        return JsonResponse(leaderboard_list, safe=False)
+        return JsonResponse({"data":leaderboard_list})
     
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)    # Handle any unexpected exceptions
+        return JsonResponse({"error": "server_error", "message": str(e)}, status=500)
     
-    
-@csrf_exempt
-def user_history(request):
-    try:
-        username = request.GET.get('username')  # Get the username from the query string parameter
-        if not username:
-            return JsonResponse({"error": "Missing username query parameter."}, status=400)
-        
-        # Query the Game objects for the user's history
-        user_games = Game.objects.filter(username=username).order_by('-timestamp')
-        if not user_games:    # If no games found for the user, return an empty list
-            return JsonResponse([], safe=False)
-        
-        # Create a list containing the user's game history data
-        user_history = []
-        for game in user_games:
-            user_history.append({
-                'timestamp': game.timestamp,
-                'wpm': game.wpm,
-            })
-        
-        return JsonResponse(user_history, safe=False)
-    
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)    # Handle any unexpected exceptions
-    
-    
+
 @csrf_exempt
 def finished_game(request):
     if request.method == 'POST':
@@ -65,24 +39,29 @@ def finished_game(request):
             try:
                 username = request.user.username
                 data = json.loads(request.body)
-                wpm = data['wpm']   # validate this is an int
+                wpm = data['wpm']
                 
                 game = Game.objects.create(username=username, wpm=wpm)    # Create a new Game object and insert into db
-                return JsonResponse({"success": "Game inserted."})
+                return JsonResponse({"success": "Game inserted."}, status=201)
             
             except KeyError:
-                return JsonResponse({"error": "Missing JSON key."}, status=400)
+                return JsonResponse({"error": "missing_key", "message": "Missing JSON key."}, status=400)
 
             except json.JSONDecodeError:
-                return JsonResponse({"error": "Invalid JSON data."}, status=400)
+                return JsonResponse({"error": "invalid_json", "message": "Invalid JSON data."}, status=400)
 
             except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
+                return JsonResponse({"error": "server_error", "message": str(e)}, status=500)
 
         else:
-            return JsonResponse({"error": "You are not logged in."}, status=400)
+            return JsonResponse({"error": "not_authenticated", "message":"You are not logged in."}, status=401)
     else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+        return JsonResponse({"error": "post_required", "message": "Method must be POST"}, status=405)
+
+
+
+
+
 
 
 @csrf_exempt
@@ -96,7 +75,7 @@ def register_user(request):
             country = data['country']
             keyboard = data['keyboard']
             
-            # validate things like username not having cross site scripting, sql injection, valid unicode, etc
+            # todo: validate things like username not having cross site scripting, sql injection, valid unicode, etc
             
             # Create a new user instance
             new_user = GameUser.objects.create_user(
@@ -108,19 +87,19 @@ def register_user(request):
                 description=""
             )
 
-            return JsonResponse({'message': 'User created successfully'}, status=201)
+            return JsonResponse({'success': 'User created successfully'}, status=201)
         
         except KeyError:
-            return JsonResponse({"error": "Missing JSON key."}, status=400)
+            return JsonResponse({"error": "missing_key", "message": "Missing JSON key."}, status=400)
 
         except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON data."}, status=400)
+            return JsonResponse({"error": "invalid_json", "message": "Invalid JSON data."}, status=400)
 
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            return JsonResponse({"error": "server_error", "message": str(e)}, status=500)
 
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+        return JsonResponse({"error": "post_required", "message": "Method must be POST"}, status=405)
 
 
 @csrf_exempt
@@ -139,19 +118,19 @@ def login_user(request):
                 return JsonResponse({"success": "User logged in successfully."})
             
             else:
-                return JsonResponse({'error': 'Invalid credentials'}, status=401)
+                return JsonResponse({"error": "invalid_credentials", "message": "Invalid credentials"}, status=401)
             
         except KeyError:
-            return JsonResponse({"error": "Missing JSON key."}, status=400)
+            return JsonResponse({"error": "missing_key", "message": "Missing JSON key."}, status=400)
 
         except json.JSONDecodeError:
-            return JsonResponse({"error": "Invalid JSON data."}, status=400)
+            return JsonResponse({"error": "invalid_json", "message": "Invalid JSON data."}, status=400)
 
         except Exception as e:
-            return JsonResponse({"error": str(e)}, status=500)
+            return JsonResponse({"error": "server_error", "message": str(e)}, status=500)
 
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)
+        return JsonResponse({"error": "post_required", "message": "Method must be POST"}, status=405)
 
 
 
@@ -161,19 +140,19 @@ def logout_user(request):
         logout(request)
         return JsonResponse({"success": "User logged out successfully."})
     else:
-        return JsonResponse({'error': 'Only POST requests are allowed'}, status=405)    
+        return JsonResponse({"error": "post_required", "message": "Method must be POST"}, status=405)
 
 @csrf_exempt
 def user_info(request):
     try:
         username = request.GET.get('username')  # query string
         if not username:
-            return JsonResponse({"error": "Missing username query parameter."}, status=400)
+            return JsonResponse({"error": "missing_param", "message": "Missing query parameter 'username'"}, status=400)
 
         user = GameUser.objects.get(username=username)
         
         return JsonResponse({
-            "user_info": {
+            "data": {
                 "username": user.username,
                 "display_name": user.display_name,
                 "country": user.country,
@@ -183,10 +162,44 @@ def user_info(request):
         })
 
     except ObjectDoesNotExist:
-        return JsonResponse({"error": "Username doesn't exist."}, status=400)
+        return JsonResponse({"error": "user_not_found", "message": f"Username {username} not found."}, status=400)
 
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+        return JsonResponse({"error": "server_error", "message": str(e)}, status=500)
+
+
+
+
+@csrf_exempt
+def user_history(request):
+    try:
+        username = request.GET.get('username')  # Get the username from the query string parameter
+        if not username:
+            return JsonResponse({"error": "missing_param", "message": "Missing query parameter 'username'"}, status=400)
+        limit = int(request.GET.get('limit', 10))  # Default to 10 records if limit parameter is not provided
+        
+        # Check if the user exists
+        user_exists = GameUser.objects.filter(username=username).exists()
+        if not user_exists:
+            return JsonResponse({"error": "user_not_found", "message": f"User with username '{username}' not found."}, status=404)
+        
+        # Query the Game objects for the user's history, limit by limit
+        user_games = Game.objects.filter(username=username).order_by('-timestamp')[:limit]
+        
+        # Create a list containing the user's game history data
+        user_history = []
+        for game in user_games:
+            user_history.append({
+                'timestamp': game.timestamp,
+                'wpm': game.wpm
+            })
+        
+        return JsonResponse({"data": user_history})
+    
+    except Exception as e:
+        return JsonResponse({"error": "server_error", "message": str(e)}, status=500)
+
+
 
 @csrf_exempt
 def user_update(request):
@@ -198,30 +211,30 @@ def user_update(request):
                 
                 for key, value in data.items():
                     if key == 'username':
-                        return JsonResponse({"error": "Cannot change username."}, status=400)
+                        return JsonResponse({"error": "username_entered", "message": "Cannot change username."}, status=400)
                     if key == 'password':
                         user.set_password(value)
                     elif key in ['display_name', 'country', 'keyboard', 'description']:
                         setattr(user, key, value)
                     else:
-                        return JsonResponse({"error": "Unknown keys sent."}, status=400)
+                        return JsonResponse({"error": "unknown_key", "message": "Unknown keys sent."}, status=400)
                 
                 user.save()
                 return JsonResponse({"success": "User info updated successfully."})
             
             except KeyError:
-                return JsonResponse({"error": "Missing JSON key."}, status=400)
+                return JsonResponse({"error": "missing_key", "message": "Missing JSON key."}, status=400)
 
             except json.JSONDecodeError:
-                return JsonResponse({"error": "Invalid JSON data."}, status=400)
+                return JsonResponse({"error": "invalid_json", "message": "Invalid JSON data."}, status=400)
 
             except Exception as e:
-                return JsonResponse({"error": str(e)}, status=500)
+                return JsonResponse({"error": "server_error", "message": str(e)}, status=500)
             
         else:
-            return JsonResponse({"error": "You are not logged in."}, status=400)
+            return JsonResponse({"error": "not_authenticated", "message":"You are not logged in."}, status=401)
     else:
-        return JsonResponse({"error": "Method not allowed"}, status=405)
+        return JsonResponse({"error": "post_required", "message": "Method must be POST"}, status=405)
 
 
 @csrf_exempt
