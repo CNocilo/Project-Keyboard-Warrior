@@ -244,10 +244,7 @@ const MainBodyGame = () => {
            <div className="flex space-x-2 pt-1 justify-center">
                 <button 
                     onClick={() => handleLeaderboard()}
-                    style={{ color: words === (isFinished ? 'gray' : 'black' )}}>
-                <p>
-                    10
-                </p></button>    
+                    style={{ color: words === (isFinished ? 'gray' : 'black' )}}>Upload</button>    
            </div>
         </div>
     </section>

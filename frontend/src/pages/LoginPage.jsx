@@ -32,6 +32,8 @@ const LoginPage = () => {
             else {
                 loggingIn()
                 alert(`User logged in! Welcome ${username}!`)
+                return <Redirect to="/about" />
+
             }
 
         } catch (error) {
