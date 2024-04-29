@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useEffect } from 'react';
+import ReactCountryFlag from "react-country-flag";
+import countriesData from '../countries.json'
+import 'flowbite'
+
 
 const RegisterPage = () => {
 
@@ -8,8 +12,12 @@ const [username, setUsername] = useState("");
 const [password, setPassword] = useState("");
 const [confPassword, setConfPassword] = useState("");
 const [country, setCountry] = useState("");
+const [countryName, setCountryName] = useState("");
+const [countryIsSel, setCountryIsSel] = useState(false);
 const [keyboard, setKeyboard] = useState("");
 const [isMatching, setIsMatching] = useState(true);
+
+const { countries } = countriesData;
 
 const handleRegister = async(e) => {
     e.preventDefault()
@@ -52,6 +60,16 @@ useEffect(() => {
     };
 
 }, [password, confPassword, setIsMatching]); 
+
+useEffect(() => {
+    const checkSelCountry = () => {
+        if (country !== "") {
+            setCountryIsSel(true)
+        } else {
+            setCountryIsSel(false)
+        }
+    }
+}) 
 
 
 
@@ -110,7 +128,7 @@ useEffect(() => {
                     
                     </input>
                 </div>
-                <div className="p-[2%]">
+                {/* <div className="p-[2%]">
                     <label htmlFor="country">
                         Country:
                     </label>
@@ -124,7 +142,50 @@ useEffect(() => {
                            >
                     
                     </input>
+                </div> */}
+                <div className="flex-col p-[2%]">
+                    <label htmlFor="country" className="flex pb-[3%]">
+                            Country:
+                    </label>
+                    <input className="cursor-not-allowed mb-[5%] border-2 border-gray-500 rounded-md focus:outline-cyan-500"
+                           id="country"
+                           type="text"
+                           value={countryName}
+                           onChange={(e) => setCountry(e.target.value)}
+                           >
+                    
+                    </input>
+                    <button id="dropdownDefaultButton" 
+                            data-dropdown-toggle="dropdown" 
+                            className="text-black bg-cyan-400 hover:bg-cyan-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center" 
+                            type="button"
+                            >{ countryIsSel ? country : "Select Country Here"} {/* Doesn't work.. */}
+                            <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                    </button>
+                    <div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 overflow-y-auto max-h-[200px]" aria-labelledby="dropdownDefaultButton">
+
+                            {countries.map((country, index) => (
+                                <li key={index} className="flex">
+                                <ReactCountryFlag countryCode={country.abbreviation} svg className="text-lg ml-4 mt-2"></ReactCountryFlag>
+                                <button 
+                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                    type="button"
+                                    value={country.abbreviation}
+                                    onClick={(e) => {
+                                        setCountry(country.abbreviation)
+                                        setCountryName(country.name)
+                                    }}>{country.name}</button>
+                                </li>
+                            ))}
+                        
+                        
+                        </ul>
+                    </div>
                 </div>
+
                 <div className="p-[2%]">
                     <label htmlFor="keyboard">
                         Keyboard:
@@ -159,7 +220,7 @@ useEffect(() => {
             </div>
         </form>
         </div>
-
+        
     </section>
   )
 }
