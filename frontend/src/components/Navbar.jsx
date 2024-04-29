@@ -58,9 +58,7 @@ const Navbar = () => {
                     
                     <NavLink
                         to=''
-                        className={({ isActive }) =>
-                            isActive ? 'bg-cyan-400 text-black hover:bg-cyan-400 hover:text-white font-mono rounded-tl-md rounded-tr-md px-3 py-2' 
-                                    : 'bg-cyan-500 text-black hover:bg-cyan-400 hover:text-white font-mono rounded-tl-md rounded-tr-md px-3 py-2'}>
+                        className='bg-cyan-500 text-black hover:bg-cyan-400 hover:text-white font-mono rounded-tl-md rounded-tr-md px-3 py-2'>
                         <button                       
                             onClick={handleLogout}
                             >Logout
