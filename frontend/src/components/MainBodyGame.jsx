@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */ 
 import React, { useState, useEffect, useContext } from 'react'
+import { AuthContext } from './AuthContext';
 
 const MainBodyGame = () => {
+  const { isAuthenticated, username } = useContext(AuthContext);
   const [isFinished, setIsFinished] = useState(false);
   const [score, setScore] = useState(0);
   const [currentChar, setCurrentChar] = useState(0);
@@ -15,7 +17,6 @@ const MainBodyGame = () => {
   const [endTime, setEndTime] = useState(0);
   const [wpm, setWPM] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [timer, setTimer] = useState(0);
   const [time, setTime] = useState(30);
   const [words, setWords] = useState(10);
@@ -51,54 +52,37 @@ const MainBodyGame = () => {
   }
 
   const handleLeaderboard = async () => {
-    try{
-        const response = await fetch('http://localhost:8000/api/finishedgame', {
-            method: "POST",
-            credentials: 'include',
-            headers: {
-                "Content-Type" : "application/json",
-            },
-            body: JSON.stringify({ wpm })
-        })
-        const result = await response.json()
-        
+    if (isAuthenticated) {
+        try{
+            const response = await fetch('http://localhost:8000/api/finishedgame', {
+                method: "POST",
+                credentials: 'include',
+                headers: {
+                    "Content-Type" : "application/json",
+                },
+                body: JSON.stringify({ wpm })
+            })
+            const result = await response.json()
+            
 
-        if (!response.ok) {
-            alert("Error when signing in.")
-            throw new Error('Error with signing into network');
-        }
-        else {
-            alert(`User logged in! Welcome ${username}!`)
-        }
+            if (!response.ok) {
+                throw new Error('Error inserting game.');
+            } else {
+                alert("Game finished and entered into db!");     // todo make something prettier than this
+            }
 
-      } catch (error) {
-          console.error('Error during login', error)
-      }
+        } catch (error) {
+            console.error('Error during login', error)
+        }
+    } else {
+        alert("Game not entered into db because you aren't logged in.");   // todo make something prettier than this
+    }
   }
 
-  const fetchLogin = async () => {
-    try {
-      const response = await fetch('http://localhost:8000/api/checkloggedin', {
-                                    credentials: 'include',
-                                  }); // Replace with your API endpoint
-      if (!response.ok) {
-        throw new Error('Failed to fetch login data');
-      }
-      const data = await response.json();
-      if (data.authenticated) {
-        setIsLoggedIn(true);
-      }
-      else {
-        setIsLoggedIn(false);
-      }
-    } catch (error) {
-      console.error('Error fetching login data:', error);
-    }
-  };
+
 
   // Fetch leaderboard data when the component mounts
   useEffect(() => {
-    fetchLogin();
     randomizePassage();
   }, []);
 

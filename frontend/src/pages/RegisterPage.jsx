@@ -16,9 +16,7 @@ const handleRegister = async(e) => {
     try {
         const response = await fetch('http://localhost:8000/api/register', {
             method: "POST",
-            headers: {
-                "Content-Type" : "application/json",
-            },
+            headers: {"Content-Type" : "application/json"},
             body: JSON.stringify({ username, password, country, keyboard })
         })
         alert("User created!")
@@ -62,7 +60,7 @@ useEffect(() => {
         <div className="container-lg m-[5%] p-5 bg-cyan-600 bg-opacity-50 rounded-md shadow-md">
         <div className="bg-yellow-100 p-5 m-[2%] rounded-md text-center shadow-md">
             <h6 className="font-bold text-3xl">Register here!</h6>
-            <h1>Are you ready to start typing!</h1>
+            <h1>Are you ready to start typing?!</h1>
         </div>
         <form>
             <div className="flex-col bg-yellow-100 p-5 m-[2%] rounded-md shadow-md">

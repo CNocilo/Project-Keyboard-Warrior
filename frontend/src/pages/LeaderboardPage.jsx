@@ -13,7 +13,7 @@ const LeaderboardPage = () => {
         throw new Error('Failed to fetch leaderboard data');
       }
       const data = await response.json();
-      setLeaderboardData(data);
+      setLeaderboardData(data.data);
     } catch (error) {
       console.error('Error fetching leaderboard data:', error);
     }
