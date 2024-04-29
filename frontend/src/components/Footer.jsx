@@ -36,17 +36,17 @@ const Footer = () => {
                 </Link>
                 <a
                     className="p-2 bg-yellow-100 rounded-md font-mono hover:bg-white shadow-md"
-                    href='/'
+                    href='https://twitter.com/u_e_d_44'
                     >Twitter
                 </a>
                 <a
                     className="p-2 bg-yellow-100 rounded-md font-mono hover:bg-white shadow-md"
-                    href='/'
+                    href='https://www.instagram.com/ugur_emre/'
                     >Instagram
                 </a>
                 <a
                     className="p-2 bg-yellow-100 rounded-md font-mono hover:bg-white shadow-md"
-                    href='/'
+                    href='https://www.linkedin.com/in/ugur-emre-dogan/'
                     >LinkedIn
                 </a>
 
