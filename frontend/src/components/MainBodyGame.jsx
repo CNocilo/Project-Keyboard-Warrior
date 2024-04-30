@@ -17,9 +17,9 @@ const MainBodyGame = () => {
   const [endTime, setEndTime] = useState(0);
   const [wpm, setWPM] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
-  const [timer, setTimer] = useState(0);
-  const [time, setTime] = useState(30);
-  const [words, setWords] = useState(10);
+  //const [timer, setTimer] = useState(0);
+  //const [time, setTime] = useState(30);
+  const [words, setWords] = useState(25);
 
   const [shouldReinit, setShouldReinit] = useState(false);
 
@@ -44,9 +44,9 @@ const MainBodyGame = () => {
     setCurrentChar(0);
     setIsFinished(false);
     setScore(0);
-    setMisses(69);
+    setMisses(0);
     setWPM(0);
-    randomizePassage();
+    randomizePassage(words);
   }
 
   function getRandomInt(min, max) {
@@ -55,11 +55,11 @@ const MainBodyGame = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const randomizePassage = () => {
+  const randomizePassage = (wordNum) => {
     const randomWord = wordBank[getRandomInt(0,199)];
     const capitalizedWord = randomWord.charAt(0).toUpperCase() + randomWord.slice(1);
     setCurrentWord(capitalizedWord);
-    for (let i = 0; i < words; i++) {
+    for (let i = 0; i < wordNum; i++) {
       setPassage((prev) => [...prev, wordBank[getRandomInt(0,199)]]);
     }
   }
@@ -73,7 +73,7 @@ const MainBodyGame = () => {
   }*/
 
   const handleLeaderboard = async () => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isFinished) {
         try{
             const response = await fetch('http://localhost:8000/api/finishedgame', {
                 method: "POST",
@@ -95,8 +95,10 @@ const MainBodyGame = () => {
         } catch (error) {
             console.error('Error during login', error)
         }
+    } else if (!isFinished) {
+        alert("You must finish the game first.");
     } else {
-        alert("Game not entered into db because you aren't logged in.");   // todo make something prettier than this
+        alert("You must be logged in to Upload your score.");   // todo make something prettier than this
     }
   }
 
@@ -104,7 +106,7 @@ const MainBodyGame = () => {
 
   // Fetch leaderboard data when the component mounts
   useEffect(() => {
-    randomizePassage();
+    randomizePassage(12);
   }, []);
 
   const keyDown = (event) => {
@@ -186,12 +188,6 @@ const MainBodyGame = () => {
             </div>
            <div className="flex space-x-2 pt-1 justify-center">
                 <button 
-                    onClick={() => handleWords(10)}
-                    style={{ color: words === 10 ? 'gray' : 'black' }}>
-                <p>
-                    10
-                </p></button>
-                <button 
                     onClick={() => handleWords(25)}
                     style={{ color: words === 25 ? 'gray' : 'black' }}>
                 <p>
@@ -202,6 +198,12 @@ const MainBodyGame = () => {
                     style={{ color: words === 50 ? 'gray' : 'black' }}>
                 <p>
                     50
+                </p></button>
+                <button 
+                    onClick={() => handleWords(75)}
+                    style={{ color: words === 75 ? 'gray' : 'black' }}>
+                <p>
+                    75
                 </p></button>
                 <button 
                     onClick={() => handleWords(100)}
