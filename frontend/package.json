@@ -11,6 +11,7 @@
     "server": "json-server --watch src/test.json --port 5000"
   },
   "dependencies": {
+    "flowbite": "^2.3.0",
     "react": "^18.2.0",
     "react-country-flag": "^3.1.0",
     "react-dom": "^18.2.0",
