@@ -20,11 +20,31 @@ const MainBodyGame = () => {
   const [time, setTime] = useState(30);
   const [words, setWords] = useState(10);
 
+  const [shouldReinit, setShouldReinit] = useState(false);
+
+  const handleWords = (button) => {
+    if (words !== button) {
+      setWords(button);
+      setShouldReinit(true);  // Set flag to true to indicate reInit should run
+    }
+  };
+  
+  useEffect(() => {
+    if (shouldReinit) {
+      reInit();
+      setShouldReinit(false);  // Reset flag
+    }
+  }, [shouldReinit]);
+  
   const reInit = () => {
     setPassage([]);
     setCurrentWord("");
     setWordHistory([]);
     setCurrentChar(0);
+    setIsFinished(false);
+    setScore(0);
+    setMisses(69);
+    setWPM(0);
     randomizePassage();
   }
 
@@ -35,20 +55,21 @@ const MainBodyGame = () => {
   }
 
   const randomizePassage = () => {
-    setCurrentWord(wordBank[getRandomInt(0,199)]);
-    //setCurrentWord(currentWord.charAt(0).toUpperCase() + currentWord.slice(1));
+    const randomWord = wordBank[getRandomInt(0,199)];
+    const capitalizedWord = randomWord.charAt(0).toUpperCase() + randomWord.slice(1);
+    setCurrentWord(capitalizedWord);
     for (let i = 0; i < words; i++) {
       setPassage((prev) => [...prev, wordBank[getRandomInt(0,199)]]);
     }
   }
 
-  const handleTime = (button) => {
+  /*const handleTime = (button) => {
     setTime(button);
   }
   const handleWords = (button) => {
-    //setWords(button);
-    //reInit();
-  }
+    setWords(button);
+    reInit();
+  }*/
 
   const handleLeaderboard = async () => {
     try{
@@ -122,11 +143,11 @@ const MainBodyGame = () => {
         setCurrentChar(0);
       }
       else if (currentChar === currentWord.length - 2 && passage.length === 0){
-        handleLeaderboard();
+        //handleLeaderboard();
         setIsFinished(true);
       }
     }
-    else if (event.key !== 'Shift' && event.key !== 'CapsLock') {
+    else if (event.key !== 'Shift' && event.key !== 'CapsLock' && !isFinished) {
       setMisses(misses + 1);
     }
 
@@ -174,37 +195,7 @@ const MainBodyGame = () => {
         </div>
       </section>
       <section className="p-[2%]">
-        <div className="container m-auto bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
-            <div className="bg-yellow-50 p-2 text-center rounded-md">
-                Time(Seconds)
-            </div>
-           <div className="flex space-x-2 pt-1 justify-center">
-                <button 
-                    onClick={() => handleTime(15)}
-                    style={{ color: time === 15 ? 'gray' : 'black' }}>
-                <p>
-                    15
-                </p></button>
-                <button 
-                    onClick={() => handleTime(30)}
-                    style={{ color: time === 30 ? 'gray' : 'black' }}>
-                <p>
-                    30
-                </p></button>
-                <button 
-                    onClick={() => handleTime(60)}
-                    style={{ color: time === 60 ? 'gray' : 'black' }}>
-                <p>
-                    60
-                </p></button>
-                <button 
-                    onClick={() => handleTime(120)}
-                    style={{ color: time === 120 ? 'gray' : 'black' }}>
-                <p>
-                    120
-                </p></button>
-           </div>
-        </div>
+        
         <div className="container mt-[5%] bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
             <div className="bg-yellow-50 p-2 text-center rounded-md">
                 Words
@@ -244,9 +235,9 @@ const MainBodyGame = () => {
            <div className="flex space-x-2 pt-1 justify-center">
                 <button 
                     onClick={() => handleLeaderboard()}
-                    style={{ color: words === (isFinished ? 'gray' : 'black' )}}>
+                    style={{ color: isFinished ? 'black' : 'gray' }}>
                 <p>
-                    10
+                    Upload
                 </p></button>    
            </div>
         </div>
@@ -256,3 +247,38 @@ const MainBodyGame = () => {
 }
 
 export default MainBodyGame
+
+
+/* Time buttons, removing for now
+<div className="container m-auto bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
+            <div className="bg-yellow-50 p-2 text-center rounded-md">
+                Time(Seconds)
+            </div>
+           <div className="flex space-x-2 pt-1 justify-center">
+                <button 
+                    onClick={() => handleTime(15)}
+                    style={{ color: time === 15 ? 'gray' : 'black' }}>
+                <p>
+                    15
+                </p></button>
+                <button 
+                    onClick={() => handleTime(30)}
+                    style={{ color: time === 30 ? 'gray' : 'black' }}>
+                <p>
+                    30
+                </p></button>
+                <button 
+                    onClick={() => handleTime(60)}
+                    style={{ color: time === 60 ? 'gray' : 'black' }}>
+                <p>
+                    60
+                </p></button>
+                <button 
+                    onClick={() => handleTime(120)}
+                    style={{ color: time === 120 ? 'gray' : 'black' }}>
+                <p>
+                    120
+                </p></button>
+           </div>
+        </div>
+*/
