@@ -17,16 +17,36 @@ const MainBodyGame = () => {
   const [endTime, setEndTime] = useState(0);
   const [wpm, setWPM] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
-  const [timer, setTimer] = useState(0);
-  const [time, setTime] = useState(30);
-  const [words, setWords] = useState(10);
+  //const [timer, setTimer] = useState(0);
+  //const [time, setTime] = useState(30);
+  const [words, setWords] = useState(25);
 
+  const [shouldReinit, setShouldReinit] = useState(false);
+
+  const handleWords = (button) => {
+    if (words !== button) {
+      setWords(button);
+      setShouldReinit(true);  // Set flag to true to indicate reInit should run
+    }
+  };
+  
+  useEffect(() => {
+    if (shouldReinit) {
+      reInit();
+      setShouldReinit(false);  // Reset flag
+    }
+  }, [shouldReinit]);
+  
   const reInit = () => {
     setPassage([]);
     setCurrentWord("");
     setWordHistory([]);
     setCurrentChar(0);
-    randomizePassage();
+    setIsFinished(false);
+    setScore(0);
+    setMisses(0);
+    setWPM(0);
+    randomizePassage(words);
   }
 
   function getRandomInt(min, max) {
@@ -35,24 +55,25 @@ const MainBodyGame = () => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  const randomizePassage = () => {
-    setCurrentWord(wordBank[getRandomInt(0,199)]);
-    //setCurrentWord(currentWord.charAt(0).toUpperCase() + currentWord.slice(1));
-    for (let i = 0; i < words; i++) {
+  const randomizePassage = (wordNum) => {
+    const randomWord = wordBank[getRandomInt(0,199)];
+    const capitalizedWord = randomWord.charAt(0).toUpperCase() + randomWord.slice(1);
+    setCurrentWord(capitalizedWord);
+    for (let i = 0; i < wordNum; i++) {
       setPassage((prev) => [...prev, wordBank[getRandomInt(0,199)]]);
     }
   }
 
-  const handleTime = (button) => {
+  /*const handleTime = (button) => {
     setTime(button);
   }
   const handleWords = (button) => {
-    //setWords(button);
-    //reInit();
-  }
+    setWords(button);
+    reInit();
+  }*/
 
   const handleLeaderboard = async () => {
-    if (isAuthenticated) {
+    if (isAuthenticated && isFinished) {
         try{
             const response = await fetch('http://localhost:8000/api/finishedgame', {
                 method: "POST",
@@ -74,8 +95,10 @@ const MainBodyGame = () => {
         } catch (error) {
             console.error('Error during login', error)
         }
+    } else if (!isFinished) {
+        alert("You must finish the game first.");
     } else {
-        alert("Game not entered into db because you aren't logged in.");   // todo make something prettier than this
+        alert("You must be logged in to Upload your score.");   // todo make something prettier than this
     }
   }
 
@@ -83,7 +106,7 @@ const MainBodyGame = () => {
 
   // Fetch leaderboard data when the component mounts
   useEffect(() => {
-    randomizePassage();
+    randomizePassage(12);
   }, []);
 
   const keyDown = (event) => {
@@ -106,11 +129,11 @@ const MainBodyGame = () => {
         setCurrentChar(0);
       }
       else if (currentChar === currentWord.length - 2 && passage.length === 0){
-        handleLeaderboard();
+        //handleLeaderboard();
         setIsFinished(true);
       }
     }
-    else if (event.key !== 'Shift' && event.key !== 'CapsLock') {
+    else if (event.key !== 'Shift' && event.key !== 'CapsLock' && !isFinished) {
       setMisses(misses + 1);
     }
 
@@ -158,7 +181,62 @@ const MainBodyGame = () => {
         </div>
       </section>
       <section className="p-[2%]">
-        <div className="container m-auto bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
+        
+        <div className="container mt-[5%] bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
+            <div className="bg-yellow-50 p-2 text-center rounded-md">
+                Words
+            </div>
+           <div className="flex space-x-2 pt-1 justify-center">
+                <button 
+                    onClick={() => handleWords(25)}
+                    style={{ color: words === 25 ? 'gray' : 'black' }}>
+                <p>
+                    25
+                </p></button>
+                <button 
+                    onClick={() => handleWords(50)}
+                    style={{ color: words === 50 ? 'gray' : 'black' }}>
+                <p>
+                    50
+                </p></button>
+                <button 
+                    onClick={() => handleWords(75)}
+                    style={{ color: words === 75 ? 'gray' : 'black' }}>
+                <p>
+                    75
+                </p></button>
+                <button 
+                    onClick={() => handleWords(100)}
+                    style={{ color: words === 100 ? 'gray' : 'black' }}>
+                <p>
+                    100
+                </p></button>
+                
+           </div>
+        </div>
+        <div className="container mt-[5%] bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
+            <div className="bg-yellow-50 p-2 text-center rounded-md">
+                Post to Leaderboard
+            </div>
+           <div className="flex space-x-2 pt-1 justify-center">
+                <button 
+                    onClick={() => handleLeaderboard()}
+                    style={{ color: isFinished ? 'black' : 'gray' }}>
+                <p>
+                    Upload
+                </p></button>    
+           </div>
+        </div>
+    </section>
+    </div>
+  )
+}
+
+export default MainBodyGame
+
+
+/* Time buttons, removing for now
+<div className="container m-auto bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
             <div className="bg-yellow-50 p-2 text-center rounded-md">
                 Time(Seconds)
             </div>
@@ -189,51 +267,4 @@ const MainBodyGame = () => {
                 </p></button>
            </div>
         </div>
-        <div className="container mt-[5%] bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
-            <div className="bg-yellow-50 p-2 text-center rounded-md">
-                Words
-            </div>
-           <div className="flex space-x-2 pt-1 justify-center">
-                <button 
-                    onClick={() => handleWords(10)}
-                    style={{ color: words === 10 ? 'gray' : 'black' }}>
-                <p>
-                    10
-                </p></button>
-                <button 
-                    onClick={() => handleWords(25)}
-                    style={{ color: words === 25 ? 'gray' : 'black' }}>
-                <p>
-                    25
-                </p></button>
-                <button 
-                    onClick={() => handleWords(50)}
-                    style={{ color: words === 50 ? 'gray' : 'black' }}>
-                <p>
-                    50
-                </p></button>
-                <button 
-                    onClick={() => handleWords(100)}
-                    style={{ color: words === 100 ? 'gray' : 'black' }}>
-                <p>
-                    100
-                </p></button>
-                
-           </div>
-        </div>
-        <div className="container mt-[5%] bg-yellow-100 p-5 rounded-md justify-center font-mono shadow-md">
-            <div className="bg-yellow-50 p-2 text-center rounded-md">
-                Post to Leaderboard
-            </div>
-           <div className="flex space-x-2 pt-1 justify-center">
-                <button 
-                    onClick={() => handleLeaderboard()}
-                    style={{ color: words === (isFinished ? 'gray' : 'black' )}}>Upload</button>    
-           </div>
-        </div>
-    </section>
-    </div>
-  )
-}
-
-export default MainBodyGame
+*/
