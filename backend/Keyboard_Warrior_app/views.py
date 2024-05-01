@@ -75,7 +75,12 @@ def register_user(request):
             country = data['country']
             keyboard = data['keyboard']
             
-            # todo: validate things like username not having cross site scripting, sql injection, valid unicode, etc
+            if len(username) > 100:
+                return JsonResponse({"error": "name_too_long", "message": "Username is too long."}, status=400)
+            elif len(password) > 100:
+                return JsonResponse({"error": "pass_too_long", "message": "Password is too long."}, status=400)
+            elif not keyboard in ['qwerty', 'qwertz', 'azerty', 'dvorak', 'colemak']:
+                return JsonResponse({"error": "wrong_keyboard", "message": "Keyboard not in list."}, status=400)
             
             # Create a new user instance
             new_user = GameUser.objects.create_user(
