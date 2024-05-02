@@ -62,7 +62,6 @@ const handleRegister = async(e) => {
         });
 
         if (!response.ok) {
-            alert("Unable to pass through.")
             toast.error("Unable to pass through.", {
                 position: 'bottom-right',
                 autoClose: 3000
@@ -122,12 +121,12 @@ useEffect(() => {
         </div>
         <div className="flex-col bg-yellow-100 p-5 m-[2%] rounded-md shadow-md">
             <ul>
-                <h1>Username requirements:</h1>
+                <h1 className="font-bold text-lg">Username requirements:</h1>
                 <li className="pl-[2%]">- Has to be at least 4-12 characters long</li>
                 <li className="pl-[2%]">- Needs at least 1 capital letter</li>
             </ul>
             <ul>
-                <h1>Password requirements:</h1>
+                <h1 className="font-bold text-lg">Password requirements:</h1>
                 <li className="pl-[2%]">- Has to be at least 8-20 characters long</li>
                 <li className="pl-[2%]">- Needs at least 1 capital letter</li>
                 <li className="pl-[2%]">- Needs at least 1 lower case letter</li>
