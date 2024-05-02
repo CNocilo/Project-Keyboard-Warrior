@@ -31,7 +31,8 @@ const handleRegister = async(e) => {
 
         if (!response.ok) {
             alert("Unable to pass through.")
-        }
+        } 
+
     } catch (error) {
         console.error('Error during login', error)
     }
@@ -165,13 +166,13 @@ useEffect(() => {
                             </svg>
                     </button>
                     <div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 overflow-y-auto max-h-[200px]" aria-labelledby="dropdownDefaultButton">
+                        <ul className="py-2 text-sm text-gray-700 overflow-y-auto max-h-[200px]" aria-labelledby="dropdownDefaultButton">
 
                             {countries.map((country, index) => (
                                 <li key={index} className="flex">
                                 <ReactCountryFlag countryCode={country.abbreviation} svg className="text-lg ml-4 mt-2"></ReactCountryFlag>
                                 <button 
-                                    className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                                    className="block px-4 py-2 hover:bg-gray-200"
                                     type="button"
                                     value={country.abbreviation}
                                     onClick={(e) => {
@@ -186,7 +187,68 @@ useEffect(() => {
                     </div>
                 </div>
 
-                <div className="p-[2%]">
+                <div className="flex-col p-[2%]">
+                    <label htmlFor="keyboard" className="flex pb-[3%]">
+                            Keyboard Layout:
+                    </label>
+                    <input className="cursor-not-allowed mb-[5%] border-2 border-gray-500 rounded-md focus:outline-cyan-500"
+                           id="keyboard"
+                           type="text"
+                           value={keyboard}
+                           >
+                    
+                    </input>
+                    <button id="dropdownDefaultButtonKB" 
+                            data-dropdown-toggle="dropdownKB" 
+                            className="text-black bg-cyan-400 hover:bg-cyan-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center" 
+                            type="button"
+                            >Select Keyboard Here
+                            <svg className="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
+                            </svg>
+                    </button>
+                    <div id="dropdownKB" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-22">
+                        <ul className="py-2 text-sm text-gray-700 overflow-y-auto max-h-[200px]" aria-labelledby="dropdownDefaultButtonKB">
+
+                            <li className="flex-col">
+                                <button 
+                                    className="block px-4 py-2 hover:bg-gray-200"
+                                    type="button"
+                                    onClick={(e) => {
+                                        setKeyboard('qwerty')
+                                    }}>Qwerty
+                                </button>
+                                <button 
+                                    className="block px-4 py-2 hover:bg-gray-200"
+                                    type="button"
+                                    onClick={(e) => {
+                                        setKeyboard('qwertz')
+                                    }}>Qwertz
+                                </button>
+                                <button 
+                                    className="block px-4 py-2 hover:bg-gray-200"
+                                    type="button"
+                                    onClick={(e) => {
+                                        setKeyboard('dvorak')
+                                    }}>Dvorak
+                                </button>
+                                <button 
+                                    className="block px-4 py-2 hover:bg-gray-200"
+                                    type="button"
+                                    onClick={(e) => {
+                                        setKeyboard('colemak')
+                                    }}>Colemak
+                                </button>
+
+
+                            </li>
+                        
+                        
+                        </ul>
+                    </div>
+                </div>
+
+                {/* <div className="p-[2%]">
                     <label htmlFor="keyboard">
                         Keyboard:
                     </label>
@@ -200,7 +262,7 @@ useEffect(() => {
                            >
                     
                     </input>
-                </div>
+                </div> */}
                 <div className="m-[1%] mt-3 p-[2%]">
                     <button
                         className="bg-cyan-400 rounded-md p-2 hover:text-white"
