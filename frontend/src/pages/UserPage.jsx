@@ -59,7 +59,7 @@ const UserPage = () => {
 
   const dateConversion = (isoTimestamp) => {
     const dateObj = new Date(isoTimestamp)
-    return `${dateObj.getDate()}-${dateObj.getMonth()}-${dateObj.getFullYear()} at ${dateObj.getHours()}:${dateObj.getMinutes()}:${dateObj.getSeconds()}`
+    return `${dateObj.getMonth() + 1}-${dateObj.getDate()}-${dateObj.getFullYear()} at ${dateObj.getHours()}:${dateObj.getMinutes()}:${dateObj.getSeconds()}`
   }
 
   return (

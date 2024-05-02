@@ -19,8 +19,29 @@ const [isMatching, setIsMatching] = useState(true);
 
 const { countries } = countriesData;
 
+const usernameCheck = /^(?=.*[A-Z])[A-z][A-z0-9-_]{3,12}$/
+const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$/
+
+const usernameError = "Username does not match criteria..\nMust include the following:\nHas to be at least 4-12 characters long\nNeeds at least 1 capital letter"
+const passwordError = "Password does not match criteria..\nMust include the following:\nHas to be at least 8-20 characters long\nNeeds at least 1 capital letter\nNeeds at least 1 lower case letter\nNeeds at least 1 numerical value"
+
 const handleRegister = async(e) => {
     e.preventDefault()
+
+    if (passwordCheck.test(password) !== true) {
+        alert(passwordError)
+        // console.log(passwordCheck.test(password))
+        // console.log(password)
+        return;
+    }
+    
+    if (usernameCheck.test(username) !== true) {
+        alert(usernameError)
+        // console.log(usernameCheck.test(username))
+        // console.log(username)
+        return;
+    }
+
     try {
         const response = await fetch('http://localhost:8000/api/register', {
             method: "POST",
@@ -93,6 +114,7 @@ useEffect(() => {
                     <input className="border-2 border-gray-500 rounded-md focus:outline-cyan-500"
                             id="username"
                             type="text"
+                            placeholder="Enter username here."
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             >
@@ -108,6 +130,7 @@ useEffect(() => {
                     <input className="border-2 border-gray-500 rounded-md focus:outline-cyan-500"
                            id="password"
                            type="password"
+                           placeholder="Enter password here."
                            value={password}
                            onChange={(e) => setPassword(e.target.value)}
                            >
@@ -195,6 +218,7 @@ useEffect(() => {
                            id="keyboard"
                            type="text"
                            value={keyboard}
+                           onChange={(e) => setKeyboard(e.target.value)}
                            >
                     
                     </input>
