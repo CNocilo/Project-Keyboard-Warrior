@@ -21,7 +21,7 @@ const [isMatching, setIsMatching] = useState(true);
 
 const { countries } = countriesData;
 
-const usernameCheck = /^(?=.*[A-Z])[A-z][A-z0-9-_]{3,12}$/
+const usernameCheck = /^(?=.*[A-Z])[A-z][A-z0-9-_]{4,12}$/
 const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$/
 
 const usernameError = "Username does not match criteria.."
