@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */ 
 import React, { useState, useEffect, useContext } from 'react'
 import { AuthContext } from './AuthContext';
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const MainBodyGame = () => {
   const { isAuthenticated, username } = useContext(AuthContext);
@@ -89,16 +91,25 @@ const MainBodyGame = () => {
             if (!response.ok) {
                 throw new Error('Error inserting game.');
             } else {
-                alert("Game finished and entered into db!");     // todo make something prettier than this
+                toast.success("Game finished and entered into db!", {
+                  position: 'bottom-right',
+                  autoClose: 3000
+                });
             }
 
         } catch (error) {
             console.error('Error during login', error)
         }
     } else if (!isFinished) {
-        alert("You must finish the game first.");
+        toast.error("You must finish the game first.", {
+          position: 'bottom-right',
+          autoClose: 3000
+        });
     } else {
-        alert("You must be logged in to Upload your score.");   // todo make something prettier than this
+        toast.error("You must be logged in to Upload your score.", {
+          position: 'bottom-right',
+          autoClose: 3000
+        });
     }
   }
 

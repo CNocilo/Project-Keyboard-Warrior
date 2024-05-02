@@ -3,6 +3,8 @@ import { NavLink } from 'react-router-dom'
 import { useEffect } from 'react';
 import ReactCountryFlag from "react-country-flag";
 import countriesData from '../countries.json'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import 'flowbite'
 
 
@@ -22,21 +24,27 @@ const { countries } = countriesData;
 const usernameCheck = /^(?=.*[A-Z])[A-z][A-z0-9-_]{3,12}$/
 const passwordCheck = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,20}$/
 
-const usernameError = "Username does not match criteria..\nMust include the following:\nHas to be at least 4-12 characters long\nNeeds at least 1 capital letter"
-const passwordError = "Password does not match criteria..\nMust include the following:\nHas to be at least 8-20 characters long\nNeeds at least 1 capital letter\nNeeds at least 1 lower case letter\nNeeds at least 1 numerical value"
+const usernameError = "Username does not match criteria.."
+const passwordError = "Password does not match criteria.."
 
 const handleRegister = async(e) => {
     e.preventDefault()
 
     if (passwordCheck.test(password) !== true) {
-        alert(passwordError)
+        toast.error(passwordError, {
+            position: 'bottom-right',
+            autoClose: 3000
+        });
         // console.log(passwordCheck.test(password))
         // console.log(password)
         return;
     }
     
     if (usernameCheck.test(username) !== true) {
-        alert(usernameError)
+        toast.error(usernameError, {
+            position: 'bottom-right',
+            autoClose: 3000
+        });
         // console.log(usernameCheck.test(username))
         // console.log(username)
         return;
@@ -48,10 +56,17 @@ const handleRegister = async(e) => {
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify({ username, password, country, keyboard })
         })
-        alert("User created!")
+        toast.success("User created!", {
+            position: 'bottom-right',
+            autoClose: 3000
+        });
 
         if (!response.ok) {
             alert("Unable to pass through.")
+            toast.error("Unable to pass through.", {
+                position: 'bottom-right',
+                autoClose: 3000
+            });
         } 
 
     } catch (error) {
@@ -63,7 +78,10 @@ const handleRegister = async(e) => {
 
 const handlePasswordMismatch = async(e) => {
     e.preventDefault()
-    alert("Please confirm your password.")
+    toast.error("Please confirm your password.", {
+        position: 'bottom-right',
+        autoClose: 3000
+    });
 }
 
 useEffect(() => {
@@ -101,6 +119,20 @@ useEffect(() => {
         <div className="bg-yellow-100 p-5 m-[2%] rounded-md text-center shadow-md">
             <h6 className="font-bold text-3xl">Register here!</h6>
             <h1>Are you ready to start typing?!</h1>
+        </div>
+        <div className="flex-col bg-yellow-100 p-5 m-[2%] rounded-md shadow-md">
+            <ul>
+                <h1>Username requirements:</h1>
+                <li className="pl-[2%]">- Has to be at least 4-12 characters long</li>
+                <li className="pl-[2%]">- Needs at least 1 capital letter</li>
+            </ul>
+            <ul>
+                <h1>Password requirements:</h1>
+                <li className="pl-[2%]">- Has to be at least 8-20 characters long</li>
+                <li className="pl-[2%]">- Needs at least 1 capital letter</li>
+                <li className="pl-[2%]">- Needs at least 1 lower case letter</li>
+                <li className="pl-[2%]">- Needs at least 1 numerical value</li>
+            </ul>
         </div>
         <form>
             <div className="flex-col bg-yellow-100 p-5 m-[2%] rounded-md shadow-md">

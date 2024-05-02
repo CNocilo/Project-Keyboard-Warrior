@@ -12,6 +12,10 @@ const Navbar = () => {
 
             if (response.ok) {    // logout succeeded
                 window.location.reload(); // Reload the page
+                toast.success('Logout successful!', {
+                    position: 'bottom-right',
+                    autoClose: 3000
+                });
             } else {
                 console.error('Logout failed:', data);
             }

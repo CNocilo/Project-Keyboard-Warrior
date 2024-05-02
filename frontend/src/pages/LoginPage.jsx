@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../components/AuthContext';
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -22,6 +24,8 @@ const LoginPage = () => {
             if (result.success) {
                 navigate('/'); // Redirect to homepage route
                 window.location.reload();
+                
+                
             } else {
                 console.error('Error logging in')
                 // put something here to pop up to tell the user what they did wrong based on the error code
