@@ -3,6 +3,8 @@ A speed typing website that's capable of tracking your progress in the format of
 
 Feel free to add more to the list if you guys want! Here's some I had in mind.
 
+Link to published website: https://c1f672b1.project-keyboard-warrior.pages.dev/
+
 ## List of planned features:
 ### Basic layout
 * Navigation bar
